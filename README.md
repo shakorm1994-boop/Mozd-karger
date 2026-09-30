@@ -1,2 +1,0 @@
-# Mozd-karger
-Mozde kargaran
