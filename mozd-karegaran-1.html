@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<title>مزد کارگران کانتینر</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--ink:#14213a;--mut:#6b7788;--line:#e3dfd3;--brass:#a8801f;--brassbg:#f3e9cf;--on:#fff;--bad:#b3392f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1626;--card:#152238;--ink:#f3eee2;--mut:#8f9db3;--line:#243450;--brass:#d4af63;--brassbg:#2a2a2b;--on:#0d1626;--bad:#ef7d72}}
+:root[data-theme="dark"]{--bg:#0d1626;--card:#152238;--ink:#f3eee2;--mut:#8f9db3;--line:#243450;--brass:#d4af63;--brassbg:#2a2a2b;--on:#0d1626;--bad:#ef7d72}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;font-size:16px;line-height:1.6;padding-bottom:88px}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px}
+header{padding:20px 0 8px}
+h1{font-size:20px;font-weight:800;margin:0 0 12px}
+.datebar{display:flex;gap:8px;align-items:center}
+.datebar input{flex:1;text-align:center;font-weight:600}
+.arrow{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:20px;cursor:pointer}
+.total{margin:14px 0;padding:20px;border-radius:20px;background:var(--ink);color:var(--bg);display:flex;justify-content:space-between;align-items:flex-end}
+.total small{opacity:.7;display:block;font-size:13px}
+.total b{font-size:34px;font-weight:800;color:var(--brassbg);line-height:1.2}
+.total .cnt{text-align:left}.total .cnt b{font-size:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+label{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px}
+input,select{width:100%;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;padding:0 12px}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--brass);outline-offset:1px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.seg{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+.seg button{flex:1;height:40px;border:0;border-radius:9px;background:none;color:var(--mut);font:inherit;font-weight:600;cursor:pointer}
+.seg button.on{background:var(--brass);color:var(--on)}
+.btn{width:100%;height:52px;margin-top:14px;border:0;border-radius:14px;background:var(--brass);color:var(--on);font:inherit;font-weight:800;font-size:17px;cursor:pointer}
+.preview{margin-top:10px;text-align:center;color:var(--mut);font-size:14px}.preview b{color:var(--brass);font-size:18px}
+.wk{display:flex;justify-content:space-between;align-items:center;font-weight:800;padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.wk span:last-child{color:var(--brass)}
+.ent{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:14px;color:var(--mut)}
+.ent b{color:var(--ink)}
+.x{border:0;background:none;color:var(--bad);font-size:20px;width:36px;height:36px;cursor:pointer}
+.empty{text-align:center;color:var(--mut);padding:28px 8px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px))}
+.nav button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-weight:600;font-size:13px;padding:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.nav button span{font-size:22px}
+.nav button.on{color:var(--brass)}
+.rt{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.rt:last-child{border:0}.rt small{color:var(--mut);display:block}
+.btn.alt{background:none;border:1.5px solid var(--brass);color:var(--brass)}.neg{color:var(--bad)}.bal{font-weight:800;color:var(--brass)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{height:40px;padding:0 14px;border-radius:20px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;cursor:pointer}.chip.on{background:var(--brass);color:var(--on);border-color:var(--brass);font-weight:600}.chip.all{border-style:dashed}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>📦 مزد کارگران کانتینر</h1>
+<div class="datebar">
+<button class="arrow" onclick="shift(-1)" aria-label="روز بعد">›</button>
+<input type="date" id="date" onchange="render()">
+<button class="arrow" onclick="shift(1)" aria-label="روز قبل">‹</button>
+</div>
+</header>
+
+<div class="total"><div><small id="tl">مجموع مزد این روز</small><b id="tw">0</b><small id="ex"></small></div><div class="cnt"><small>کانتینر</small><b id="tc">0</b></div></div>
+
+<section id="p-add">
+<div class="card">
+<label>کارگر (می‌توانید چند نفر را انتخاب کنید)</label><div id="wsel" class="chips"></div>
+<label>نوع کار</label>
+<div class="seg"><button id="t-u" class="on" onclick="setT('u')">تخلیه</button><button id="t-l" onclick="setT('l')">بارگیری</button></div>
+<div class="row"><div><label>تعداد کانتینر</label><input id="n" type="number" inputmode="numeric" min="1" placeholder="0" oninput="pv()"></div>
+<div><label>مزد هر کانتینر</label><input id="r" type="number" inputmode="decimal" min="0" placeholder="0" oninput="pv()"></div></div>
+<div class="preview">مزد هر نفر: <b id="pvv">0</b></div>
+<button class="btn" onclick="add()">ثبت کار</button>
+</div>
+<div class="card"><b>پرداخت و غذا</b> <small style="color:var(--mut)">(برای کارگر و تاریخ انتخاب‌شده)</small>
+<label>مبلغ پرداختی به هر کارگر</label>
+<div class="row" style="align-items:flex-end"><input id="pa" type="number" inputmode="decimal" min="0" placeholder="0"><button class="btn alt" style="margin:0;flex:0 0 120px;height:48px" onclick="pay()">ثبت پرداخت</button></div>
+<label>قیمت هر وعده غذا (از مزد کسر می‌شود؛ صفر = فقط ثبت)</label><input id="mp" type="number" inputmode="decimal" min="0" placeholder="مثلاً 50" oninput="S.mealPrice=+this.value||0;save()">
+<label>غذا</label>
+<div class="row" style="align-items:center"><div class="seg"><button id="m1" class="on" onclick="setM(1)">۱ وعده</button><button id="m2" onclick="setM(2)">۲ وعده</button></div><button class="btn alt" style="margin:0;flex:0 0 120px;height:48px" onclick="meal()">ثبت غذا</button></div>
+</div>
+<div id="list"></div>
+</section>
+
+<section id="p-wk" class="hide">
+<div class="card">
+<label>نام کارگر جدید</label>
+<div class="row" style="align-items:flex-end"><input id="nw" placeholder="مثلاً احمد" onkeydown="if(event.key==='Enter')addW()"><button class="btn" style="margin:0;flex:0 0 96px;height:48px" onclick="addW()">افزودن</button></div>
+<label>واحد پول (اختیاری)</label><input id="cur" placeholder="مثلاً افغانی" oninput="save();render()">
+</div>
+<div id="wl" class="card"></div>
+</section>
+
+<section id="p-rep" class="hide">
+<div class="card"><div class="seg"><button id="r-d" class="on" onclick="setR('d')">این روز</button><button id="r-a" onclick="setR('a')">همه روزها</button></div></div>
+<div id="rep" class="card"></div>
+<div class="card"><b>دریافت گزارش (فایل)</b>
+<div class="row"><div><label>از تاریخ</label><input type="date" id="ef"></div><div><label>تا تاریخ</label><input type="date" id="et"></div></div>
+<button class="btn" onclick="pf()">📄 دریافت PDF</button>
+<button class="btn alt" onclick="xl()">📊 دریافت Excel (برای Google Sheets هم)</button>
+</div>
+</section>
+</div>
+
+<nav class="nav">
+<button id="n-add" class="on" onclick="tab('add')"><span>➕</span>ثبت</button>
+<button id="n-wk" onclick="tab('wk')"><span>👷</span>کارگرها</button>
+<button id="n-rep" onclick="tab('rep')"><span>📊</span>گزارش</button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+var S={workers:[],entries:[],cur:'',rate:{u:'',l:''},pays:[],meals:[],mealPrice:0},T='u',R='d',TAB='add';
+try{var s=localStorage.getItem('cw1');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+function save(){S.cur=document.getElementById('cur').value;try{localStorage.setItem('cw1',JSON.stringify(S))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+function iso(d){var z=new Date(d.getTime()-d.getTimezoneOffset()*6e4);return z.toISOString().slice(0,10)}
+$('date').value=iso(new Date());$('cur').value=S.cur||'';$('mp').value=S.mealPrice||'';var M=1,SEL=[];
+function shift(k){var d=new Date($('date').value+'T12:00:00');d.setDate(d.getDate()+k);$('date').value=iso(d);render()}
+function fmt(x){return Number(x).toLocaleString('en-US',{maximumFractionDigits:2})}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function cu(){return S.cur?' '+esc(S.cur):''}
+function tname(t){return t==='u'?'تخلیه':'بارگیری'}
+function setT(t){T=t;$('t-u').className=t==='u'?'on':'';$('t-l').className=t==='l'?'on':'';$('r').value=S.rate[t]||'';pv()}
+function setR(r){R=r;$('r-d').className=r==='d'?'on':'';$('r-a').className=r==='a'?'on':'';render()}
+function tab(t){TAB=t;['add','wk','rep'].forEach(function(k){$('p-'+k).className=k===t?'':'hide';$('n-'+k).className=k===t?'on':''});render()}
+function pv(){$('pvv').innerHTML=fmt((+$('n').value||0)*(+$('r').value||0))+cu()}
+function add(){
+var n=+$('n').value,r=+$('r').value;
+if(!S.workers.length){alert('اول در بخش «کارگرها» یک کارگر اضافه کنید.');tab('wk');return}
+if(!SEL.length){alert('حداقل یک کارگر را انتخاب کنید.');return}
+if(!n||n<1){alert('تعداد کانتینر را وارد کنید.');$('n').focus();return}
+if(!(r>=0)||$('r').value===''){alert('مزد هر کانتینر را وارد کنید.');$('r').focus();return}
+SEL.forEach(function(w,i){S.entries.push({id:Date.now()+i,w:w,d:$('date').value,t:T,n:n,r:r})});S.rate[T]=r;
+$('n').value='';save();render();$('n').focus()}
+function delE(id){if(confirm('این ثبت حذف شود؟')){S.entries=S.entries.filter(function(e){return e.id!==id});save();render()}}
+function addW(){var v=$('nw').value.trim();if(!v)return;
+if(S.workers.some(function(w){return w.name===v})){alert('این کارگر قبلاً اضافه شده است.');return}
+S.workers.push({id:'w'+Date.now(),name:v});$('nw').value='';save();render()}
+function delW(id){var w=S.workers.find(function(x){return x.id===id});
+if(confirm('«'+w.name+'» و همه ثبت‌های او حذف شود؟')){S.workers=S.workers.filter(function(x){return x.id!==id});S.entries=S.entries.filter(function(e){return e.w!==id});S.pays=S.pays.filter(function(e){return e.w!==id});S.meals=S.meals.filter(function(e){return e.w!==id});save();render()}}
+function wn(id){var w=S.workers.find(function(x){return x.id===id});return w?w.name:'—'}
+function sum(a){return a.reduce(function(s,e){return{n:s.n+e.n,m:s.m+e.n*e.r}},{n:0,m:0})}
+function nosel(){if(!SEL.length){alert('حداقل یک کارگر را انتخاب کنید.');return 1}}
+function tg(id){var i=SEL.indexOf(id);if(i>-1)SEL.splice(i,1);else SEL.push(id);render()}
+function tgAll(){SEL=SEL.length===S.workers.length?[]:S.workers.map(function(w){return w.id});render()}
+function setM(k){M=k;$('m1').className=k===1?'on':'';$('m2').className=k===2?'on':''}
+function need(){if(!S.workers.length){alert('اول در بخش «کارگرها» یک کارگر اضافه کنید.');tab('wk');return 1}}
+function pay(){if(need()||nosel())return;var a=+$('pa').value;if(!(a>0)){alert('مبلغ پرداختی را وارد کنید.');$('pa').focus();return}
+SEL.forEach(function(w,i){S.pays.push({id:Date.now()+i,w:w,d:$('date').value,a:a})});$('pa').value='';save();render()}
+function meal(){if(need()||nosel())return;SEL.forEach(function(w,i){S.meals.push({id:Date.now()+i,w:w,d:$('date').value,c:M,p:S.mealPrice||0})});save();render()}
+function delP(id){if(confirm('این پرداخت حذف شود؟')){S.pays=S.pays.filter(function(e){return e.id!==id});save();render()}}
+function delM(id){if(confirm('این غذا حذف شود؟')){S.meals=S.meals.filter(function(e){return e.id!==id});save();render()}}
+function calc(id,f){var es=S.entries.filter(function(e){return e.w===id&&f(e)}),u=sum(es.filter(function(e){return e.t==='u'})),l=sum(es.filter(function(e){return e.t==='l'})),
+paid=S.pays.filter(function(e){return e.w===id&&f(e)}).reduce(function(a,e){return a+e.a},0),ms=S.meals.filter(function(e){return e.w===id&&f(e)}),
+mc=ms.reduce(function(a,e){return a+e.c},0),mm=ms.reduce(function(a,e){return a+e.c*e.p},0),m=u.m+l.m;return{u:u.n,l:l.n,m:m,paid:paid,mc:mc,mm:mm,bal:m-mm-paid}}
+function render(){
+var d=$('date').value,day=S.entries.filter(function(e){return e.d===d}),t=sum(day);
+$('tw').innerHTML=fmt(t.m)+'<small style="display:inline;font-size:14px">'+cu()+'</small>';$('tc').textContent=fmt(t.n);
+SEL=SEL.filter(function(id){return S.workers.some(function(w){return w.id===id})});
+$('wsel').innerHTML=S.workers.length?(S.workers.length>1?'<button class="chip all" onclick="tgAll()">'+(SEL.length===S.workers.length?'لغو همه':'همه')+'</button>':'')+S.workers.map(function(w){return'<button class="chip'+(SEL.indexOf(w.id)>-1?' on':'')+'" onclick="tg(\''+w.id+'\')">'+esc(w.name)+'</button>'}).join(''):'<div class="empty" style="padding:8px">اول در بخش «کارگرها» کارگر اضافه کنید.</div>';
+if(!$('r').value&&S.rate[T])$('r').value=S.rate[T];pv();
+var f=function(e){return e.d===d},h='';
+S.workers.forEach(function(w){var es=day.filter(function(e){return e.w===w.id}),ps=S.pays.filter(function(e){return f(e)&&e.w===w.id}),ms=S.meals.filter(function(e){return f(e)&&e.w===w.id});
+if(!es.length&&!ps.length&&!ms.length)return;var c=calc(w.id,f);
+h+='<div class="card"><div class="wk"><span>'+esc(w.name)+'</span><span>'+fmt(c.m)+cu()+'</span></div>'+
+es.map(function(e){return'<div class="ent"><span><b>'+e.n+'</b> کانتینر '+tname(e.t)+' × '+fmt(e.r)+'</span><span>'+fmt(e.n*e.r)+'<button class="x" onclick="delE('+e.id+')" aria-label="حذف">×</button></span></div>'}).join('')+
+ms.map(function(e){return'<div class="ent"><span>🍽 <b>'+e.c+'</b> وعده غذا'+(e.p?' × '+fmt(e.p):'')+'</span><span class="neg">−'+fmt(e.c*e.p)+'<button class="x" onclick="delM('+e.id+')" aria-label="حذف">×</button></span></div>'}).join('')+
+ps.map(function(e){return'<div class="ent"><span>💵 پرداخت به کارگر</span><span class="neg">−'+fmt(e.a)+'<button class="x" onclick="delP('+e.id+')" aria-label="حذف">×</button></span></div>'}).join('')+'</div>'});
+$('list').innerHTML=h||'<div class="empty">برای این تاریخ چیزی ثبت نشده.<br>از فرم بالا اولین کار را ثبت کنید.</div>';
+$('wl').innerHTML=S.workers.length?S.workers.map(function(w){return'<div class="rt"><div><b>'+esc(w.name)+'</b><small>طلب باقی‌مانده: '+fmt(calc(w.id,function(){return true}).bal)+cu()+'</small></div><button class="x" onclick="delW(\''+w.id+'\')" aria-label="حذف">×</button></div>'}).join(''):'<div class="empty">هنوز کارگری اضافه نکرده‌اید.</div>';
+var all=TAB==='rep'&&R==='a',g=all?function(){return true}:f,A={m:0,n:0,paid:0,mm:0,bal:0};
+S.workers.forEach(function(w){var c=calc(w.id,g);A.m+=c.m;A.n+=c.u+c.l;A.paid+=c.paid;A.mm+=c.mm;A.bal+=c.bal});
+$('tl').textContent=all?'مجموع مزد همه روزها':'مجموع مزد این روز';
+$('tw').innerHTML=fmt(A.m)+'<small style="display:inline;font-size:14px">'+cu()+'</small>';$('tc').textContent=fmt(A.n);
+$('ex').textContent='پرداختی '+fmt(A.paid)+' · غذا '+fmt(A.mm)+' · مانده '+fmt(A.bal);
+var rr=S.workers.map(function(w){var c=calc(w.id,g);c.n=w.name;return c}).filter(function(c){return c.m||c.paid||c.mc||c.u||c.l});
+$('rep').innerHTML=rr.length?'<div class="rt"><b>کل طلب باقی‌مانده</b><b class="bal">'+fmt(A.bal)+cu()+'</b></div>'+rr.map(function(c){return'<div class="rt"><div style="flex:1"><div style="display:flex;justify-content:space-between"><b>'+esc(c.n)+'</b><b class="bal">مانده '+fmt(c.bal)+'</b></div><small>تخلیه '+c.u+' · بارگیری '+c.l+' · '+c.mc+' وعده غذا</small><small>مزد '+fmt(c.m)+' − غذا '+fmt(c.mm)+' − پرداخت '+fmt(c.paid)+'</small></div></div>'}).join(''):'<div class="empty">اطلاعاتی برای نمایش نیست.</div>';
+}
+
+var _n=new Date();$('ef').value=iso(new Date(_n.getFullYear(),_n.getMonth(),1));$('et').value=iso(_n);
+function inR(e){return e.d>=$('ef').value&&e.d<=$('et').value}
+function ROWS(){
+if($('ef').value>$('et').value){alert('تاریخ «از» باید قبل از تاریخ «تا» باشد.');return}
+var R1=[],T={u:0,l:0,mc:0,m:0,mm:0,paid:0,bal:0};
+S.workers.forEach(function(w){var c=calc(w.id,inR);if(!(c.m||c.paid||c.mc||c.u||c.l))return;
+R1.push([w.name,c.u,c.l,c.mc,c.m,c.mm,c.paid,c.bal]);['u','l','mc','m','mm','paid','bal'].forEach(function(k){T[k]+=c[k]})});
+if(!R1.length){alert('در این بازه تاریخ چیزی ثبت نشده است.');return}
+R1.push(['مجموع',T.u,T.l,T.mc,T.m,T.mm,T.paid,T.bal]);
+var R2=[];
+S.entries.filter(inR).forEach(function(e){R2.push([e.d,wn(e.w),tname(e.t),e.n,e.r,e.n*e.r])});
+S.meals.filter(inR).forEach(function(e){R2.push([e.d,wn(e.w),'غذا',e.c,e.p,-e.c*e.p])});
+S.pays.filter(inR).forEach(function(e){R2.push([e.d,wn(e.w),'پرداخت','','',-e.a])});
+R2.sort(function(a,b){return a[0]<b[0]?-1:a[0]>b[0]?1:a[1]<b[1]?-1:1});
+return{H1:['کارگر','تخلیه','بارگیری','وعده غذا','مزد','کسر غذا','پرداخت','مانده'],R1:R1,H2:['تاریخ','کارگر','نوع','تعداد','نرخ','مبلغ'],R2:R2}}
+async function dl(name,data){var c=null;try{c=window.claude&&await claude.use('downloads')}catch(e){}
+if(!c){var bl=new Blob([data],{type:'application/octet-stream'}),u=URL.createObjectURL(bl),l=document.createElement('a');l.href=u;l.download=name;document.body.appendChild(l);l.click();setTimeout(function(){URL.revokeObjectURL(u);l.remove()},1500);return}
+try{await c.save({filename:name,data:data})}catch(e){if(!e||e.code!=='declined')alert('ذخیره فایل انجام نشد. دوباره امتحان کنید.')}}
+function nm(){return 'report_'+$('ef').value+'_'+$('et').value}
+function xl(){var d=ROWS();if(!d)return;if(typeof XLSX==='undefined'){alert('بارگذاری ابزار Excel ممکن نشد. اینترنت را بررسی کنید.');return}
+var wb=XLSX.utils.book_new(),a=XLSX.utils.aoa_to_sheet([d.H1].concat(d.R1)),b=XLSX.utils.aoa_to_sheet([d.H2].concat(d.R2));
+a['!cols']=[{wch:18},{wch:9},{wch:9},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12}];b['!cols']=[{wch:12},{wch:18},{wch:10},{wch:9},{wch:10},{wch:12}];
+XLSX.utils.book_append_sheet(wb,a,'خلاصه');XLSX.utils.book_append_sheet(wb,b,'جزئیات');wb.Workbook={Views:[{RTL:true}]};
+dl(nm()+'.xlsx',XLSX.write(wb,{bookType:'xlsx',type:'array'}))}
+async function pf(){var d=ROWS();if(!d)return;try{await document.fonts.load('600 26px Vazirmatn')}catch(e){}
+var W=1240,H=1754,pg=[],cv,x,y,F='Vazirmatn,Tahoma,sans-serif';
+function np(){cv=document.createElement('canvas');cv.width=W;cv.height=H;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);x.direction='rtl';x.textAlign='right';x.textBaseline='middle';pg.push(cv);y=100}
+function tt(t,sz,col){x.font='800 '+sz+'px '+F;x.fillStyle=col;x.fillText(t,W-80,y)}
+function row(cells,ws,hd,z){var xr=W-80;if(hd){x.fillStyle='#14213a';x.fillRect(80,y-24,W-160,48)}else if(z){x.fillStyle='#f4f1ea';x.fillRect(80,y-24,W-160,48)}
+x.font=(hd?'800':'400')+' 22px '+F;x.fillStyle=hd?'#f3e9cf':'#14213a';
+cells.forEach(function(c,i){x.fillText(typeof c==='number'?fmt(c):String(c),xr-10,y,ws[i]-16);xr-=ws[i]});y+=48}
+function tbl(H1,R,ws){np2=function(){np();row(H1,ws,1)};row(H1,ws,1);R.forEach(function(r,i){if(y>H-110){np();row(H1,ws,1)}row(r,ws,0,i%2)})}
+np();tt('گزارش کارگران کانتینر',42,'#14213a');y+=52;tt('از '+$('ef').value+'  تا  '+$('et').value+(S.cur?'   ('+S.cur+')':''),26,'#6b7788');y+=70;
+tt('خلاصه هر کارگر',30,'#a8801f');y+=50;tbl(d.H1,d.R1,[220,100,100,100,130,130,130,170]);
+y+=50;if(y>H-260)np();tt('جزئیات روزانه',30,'#a8801f');y+=50;tbl(d.H2,d.R2,[190,270,150,110,150,210]);
+var js=pg.map(function(c){var b=atob(c.toDataURL('image/jpeg',0.85).split(',')[1]),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u});
+var parts=[],off=[],len=0,te=new TextEncoder();function pu(v){if(typeof v==='string')v=te.encode(v);parts.push(v);len+=v.length}
+function ob(n,b){off[n]=len;pu(n+' 0 obj\n'+b+'\nendobj\n')}
+var N=js.length,kids=js.map(function(_,i){return(3+3*i)+' 0 R'}).join(' ');
+pu('%PDF-1.4\n');ob(1,'<</Type/Catalog/Pages 2 0 R>>');ob(2,'<</Type/Pages/Kids['+kids+']/Count '+N+'>>');
+js.forEach(function(j,i){var p=3+3*i,c='q 595 0 0 842 0 0 cm /I Do Q';
+ob(p,'<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Resources<</XObject<</I '+(p+2)+' 0 R>>>>/Contents '+(p+1)+' 0 R>>');
+ob(p+1,'<</Length '+c.length+'>>\nstream\n'+c+'\nendstream');
+off[p+2]=len;pu((p+2)+' 0 obj\n<</Type/XObject/Subtype/Image/Width '+W+'/Height '+H+'/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length '+j.length+'>>\nstream\n');pu(j);pu('\nendstream\nendobj\n')});
+var xr=len,tot=2+3*N;pu('xref\n0 '+(tot+1)+'\n0000000000 65535 f \n');
+for(var n=1;n<=tot;n++)pu(('0000000000'+off[n]).slice(-10)+' 00000 n \n');
+pu('trailer\n<</Size '+(tot+1)+'/Root 1 0 R>>\nstartxref\n'+xr+'\n%%EOF');
+dl(nm()+'.pdf',new Blob(parts,{type:'application/pdf'}))}
+render();
+</script>
+</body>
+</html>
